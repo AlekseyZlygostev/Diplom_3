@@ -6,6 +6,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertTrue;
 
@@ -14,6 +15,7 @@ public class HomePage {
 
     private String bookmarkPath = ".//span[text()='";
     private String ingredientPath = ".//img[@src='";
+
 
     //Заголовок страницы "Соберите бургер"
     private By assembleBurgerTitle = By.xpath(".//h1[text()='Соберите бургер']");
@@ -26,15 +28,20 @@ public class HomePage {
     //Ингредиенты
     private By ingredient = By.xpath(ingredientPath);
 
+    public HomePage(WebDriver driver) {
+        this.driver = driver;
+    }
+
     //Проверка доступности и получение заголовка страницы
     public String assembleBurgerTitleGetText(){
-        new WebDriverWait(driver, Duration.ofSeconds(3))
-                .until(ExpectedConditions.visibilityOf(driver.findElement(assembleBurgerTitle)));
+        //new WebDriverWait(driver, Duration.ofSeconds(3))
+        //        .until(ExpectedConditions.visibilityOf(driver.findElement(assembleBurgerTitle)));
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         return driver.findElement(assembleBurgerTitle).getText();
     }
 
     //Проверка доступности и клик по кнопке "Личный Кабинет"
-    public void personalAccountButtonButtonClick(){
+    public void personalAccountButtonClick(){
         new WebDriverWait(driver, Duration.ofSeconds(3))
                 .until(ExpectedConditions.visibilityOf(driver.findElement(personalAccountButton)));
         driver.findElement(personalAccountButton).click();
@@ -49,10 +56,14 @@ public class HomePage {
 
     //Уточнение локатора закладки раздела, проверка доступности и клик
     public void bookmarkClick(String bookmarkName){
+        if (bookmarkName.equals("Булки")){
+            String bookmarkPath2 = bookmarkPath + "Начинки" + "']";
+            bookmark = By.xpath(bookmarkPath2);
+            driver.findElement(bookmark).click();
+        }
+
         bookmarkPath = bookmarkPath + bookmarkName + "']";
         bookmark = By.xpath(bookmarkPath);
-        new WebDriverWait(driver, Duration.ofSeconds(3))
-                .until(ExpectedConditions.visibilityOf(driver.findElement(bookmark)));
         driver.findElement(bookmark).click();
     }
 

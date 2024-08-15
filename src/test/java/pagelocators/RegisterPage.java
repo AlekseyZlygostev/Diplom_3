@@ -23,6 +23,10 @@ public class RegisterPage {
     //Ссылка "Войти"
     private By loginLink = By.xpath(".//a[@href='/login']");
 
+    public RegisterPage(WebDriver driver) {
+        this.driver = driver;
+    }
+
     //Проверка доступности и заполнение поля "Имя"
     public void nameFieldSendText(String name){
         new WebDriverWait(driver, Duration.ofSeconds(3))
@@ -46,17 +50,25 @@ public class RegisterPage {
 
     //Проверка доступности и клик по кнопке "Войти"
     public void registerButtonClick(){
+        //((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", driver.findElement(registerButton));
         new WebDriverWait(driver, Duration.ofSeconds(3))
-                .until(ExpectedConditions.visibilityOf(driver.findElement(registerButton)));
+                .until(ExpectedConditions.elementToBeClickable(driver.findElement(registerButton)));
         driver.findElement(registerButton).click();
     }
 
     //Шаги регистрации
-    public void checkSectionChange(String name, String email, String password){
+    public void registration(String name, String email, String password){
         nameFieldSendText(name);
         emailFieldSendText(email);
         passwordFieldSendText(password);
         registerButtonClick();
+    }
+
+    //Проверка доступности и получение текста сообщения
+    public String incorrectPasswordGetText(){
+        new WebDriverWait(driver, Duration.ofSeconds(3))
+                .until(ExpectedConditions.visibilityOf(driver.findElement(incorrectPasswordText)));
+        return driver.findElement(incorrectPasswordText).getText();
     }
 
     //Проверка доступности и клик по ссылке "Войти"

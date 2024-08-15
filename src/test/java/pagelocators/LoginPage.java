@@ -6,10 +6,13 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 public class LoginPage {
     private WebDriver driver;
 
+    //Заголовок страницы "Соберите бургер"
+    private By loginTitle = By.xpath(".//main/div/h2[text()='Вход']");
     //Поле "Email"
     private By emailField = By.xpath(".//input[@name='name']");
     //Поле "Пароль"
@@ -20,6 +23,18 @@ public class LoginPage {
     private By registerLink = By.xpath(".//a[@href='/register']");
     //Ссылка "Восстановить пароль"
     private By forgotPasswordLink = By.xpath(".//a[@href='/forgot-password']");
+
+    public LoginPage(WebDriver driver) {
+        this.driver = driver;
+    }
+
+    //Проверка доступности и получение заголовка страницы
+    public String loginTitleGetText(){
+        //new WebDriverWait(driver, Duration.ofSeconds(3))
+        //        .until(ExpectedConditions.visibilityOf(driver.findElement(loginTitle)));
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+        return driver.findElement(loginTitle).getText();
+    }
 
     //Проверка доступности и заполнение поля "Email"
     public void emailFieldSendText(String email){
@@ -43,7 +58,7 @@ public class LoginPage {
     }
 
     //Шаги авторизации
-    public void checkSectionChange(String email, String password){
+    public void login(String email, String password){
         emailFieldSendText(email);
         passwordFieldSendText(password);
         loginButtonClick();

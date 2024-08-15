@@ -2,11 +2,11 @@ package setupclasses;
 
 import com.github.javafaker.Faker;
 import io.restassured.RestAssured;
-import io.restassured.response.Response;
 import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 import static io.restassured.RestAssured.given;
 
@@ -40,7 +40,7 @@ public class BeforeAfterSteps {
 
         try {
             token = getToken(email, password).replaceFirst("Bearer ", "");
-
+            //System.out.println(token);
             given()
                     .auth().oauth2(token)
                     .delete(link.getChangeUser());
