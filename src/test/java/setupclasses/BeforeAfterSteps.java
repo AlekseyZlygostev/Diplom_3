@@ -9,6 +9,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import java.io.IOException;
+import java.io.ObjectInputFilter;
+
 import static io.restassured.RestAssured.given;
 
 public class BeforeAfterSteps {
@@ -22,7 +25,7 @@ public class BeforeAfterSteps {
     protected String token = "";
 
     @Before
-    public void openLinkInBrowser() {
+    public void openLinkInBrowser() throws IOException {
         Faker faker = new Faker();
         email = faker.internet().emailAddress();
         password = faker.internet().password();
@@ -32,10 +35,16 @@ public class BeforeAfterSteps {
         //Выбор драйвера браузера и переход по ссылке
         //driver = new ChromeDriver();
         //driver = new FirefoxDriver();
-        ChromeOptions options = new ChromeOptions();
-        System.setProperty("webdriver.chrome.driver","C:/Users/slltllnll/WebDriver/bin/yandexdriver.exe");
-        options.setBinary("C:/Users/slltllnll/AppData/Local/Yandex/YandexBrowser/Application/browser.exe");
-        driver = new ChromeDriver(options);
+
+        if("yandex".equals(System.getProperty("browser"))){
+            ChromeOptions options = new ChromeOptions();
+            System.setProperty("webdriver.chrome.driver",link.getDriverPath());
+            options.setBinary(link.getBrowserPath());
+            driver = new ChromeDriver(options);
+        } else {
+            driver = new ChromeDriver();
+        }
+
         driver.get(link.getHomePage());
     }
 
