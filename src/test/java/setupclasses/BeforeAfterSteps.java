@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import static io.restassured.RestAssured.given;
@@ -29,8 +30,12 @@ public class BeforeAfterSteps {
         RestAssured.baseURI = link.getHomePage();
 
         //Выбор драйвера браузера и переход по ссылке
-        driver = new ChromeDriver();
+        //driver = new ChromeDriver();
         //driver = new FirefoxDriver();
+        ChromeOptions options = new ChromeOptions();
+        System.setProperty("webdriver.chrome.driver","C:/Users/slltllnll/WebDriver/bin/yandexdriver.exe");
+        options.setBinary("C:/Users/slltllnll/AppData/Local/Yandex/YandexBrowser/Application/browser.exe");
+        driver = new ChromeDriver(options);
         driver.get(link.getHomePage());
     }
 
